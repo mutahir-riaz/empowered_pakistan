@@ -1,7 +1,7 @@
 import Image from "next/image";
 import SubHeading from "../ui/SubHeading";
 
-export default function AboutOurStorySection() {
+export default function AboutHowDoWeWork() {
   return (
     <section className="py-20 bg-ourBlue">
       <div className="container mx-auto px-6">
@@ -20,7 +20,7 @@ export default function AboutOurStorySection() {
           <div className="space-y-6">
             <SubHeading text="How Do We Work" className="text-left !p-0" />
             <div className="space-y-4">
-              <p className="text-lg text-gray-700 leading-relaxed">
+              <p className="text-lg text-ourGray leading-relaxed">
                 EmpowerED Pakistan is run by a passionate team of volunteers and
                 changemakers who bring their unique skills and ideas to the
                 table. Instead of rigid departments, we operate through{" "}

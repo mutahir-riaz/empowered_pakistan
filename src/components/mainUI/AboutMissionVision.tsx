@@ -1,7 +1,7 @@
 import { Card, CardContent } from "../ui/card";
 import { Target, Eye } from "lucide-react";
 
-export function AboutMissionVision() {
+export default function AboutMissionVision() {
   return (
     <section className="py-20 bg-ourLightBlue">
       <div className="container mx-auto px-6">
@@ -17,7 +17,7 @@ export function AboutMissionVision() {
                     Mission
                   </h3>
                 </div>
-                <p className="text-lg lg:text-xl text-gray-700 leading-relaxed">
+                <p className="text-lg lg:text-xl text-ourGray leading-relaxed">
                   To advance equality in access to educational opportunities by
                   guiding students, connecting them with opportunities to
                   outshine academically and creating opportunities where gaps
@@ -36,7 +36,7 @@ export function AboutMissionVision() {
                     Vision
                   </h3>
                 </div>
-                <p className="text-lg lg:text-xl text-gray-700 leading-relaxed">
+                <p className="text-lg lg:text-xl text-ourGray leading-relaxed">
                   A Pakistan where students from remote villages and crowded
                   cities alike have access to the same doors, doors that open to
                   discovery, mentorship, opportunity, and hope.

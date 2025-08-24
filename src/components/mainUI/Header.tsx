@@ -3,22 +3,16 @@ import { Button } from "../ui/button";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
-interface EventsHeaderProps {
-  currentPage: string;
-  onPageChange: (page: string) => void;
-}
-
-export default function Header({
-  currentPage,
-  onPageChange,
-}: EventsHeaderProps) {
+export default function Header() {
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
     { label: "Home", value: "/" },
-    { label: "About", value: "about" },
-    { label: "Contact", value: "contact" },
+    { label: "About", value: "/about" },
+    { label: "Events", value: "/events" },
   ];
 
   return (
@@ -41,11 +35,10 @@ export default function Header({
           <nav className="hidden lg:flex items-center space-x-8">
             {navItems.map((item) => (
               <Link
-                href={`/${item.value}`}
+                href={item.value}
                 key={item.value}
-                onClick={() => onPageChange(item.value)}
                 className={`transition-colors duration-200 text-nowrap ${
-                  currentPage === item.value
+                  pathname === item.value
                     ? "text-ourDarkBlue font-semibold"
                     : "text-ourGray hover:text-ourDarkBlue"
                 }`}
@@ -83,20 +76,18 @@ export default function Header({
           <div className="lg:hidden mt-4 pb-4 border-t border-gray-100">
             <nav className="flex flex-col space-y-4 mt-4">
               {navItems.map((item) => (
-                <button
+                <Link
+                  href={item.value}
                   key={item.value}
-                  onClick={() => {
-                    onPageChange(item.value);
-                    setIsMenuOpen(false);
-                  }}
+                  onClick={() => setIsMenuOpen(false)}
                   className={`text-center transition-colors duration-200 ${
-                    currentPage === item.value
+                    pathname === item.value
                       ? "text-ourDarkBlue font-semibold"
                       : "text-ourGray hover:text-ourDarkBlue"
                   }`}
                 >
                   {item.label}
-                </button>
+                </Link>
               ))}
               <Button className="bg-ourOrange hover:bg-ourDarkOrange text-white px-6 py-2 rounded-full shadow-lg transition-all duration-200 w-fit mx-auto">
                 Join Us

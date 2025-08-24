@@ -1,18 +1,20 @@
 import AboutHeroSection from "@/components/mainUI/AboutHeroSection";
 import AboutHowDoWeWork from "@/components/mainUI/AboutHowDoWeWork";
-import { AboutMissionVision } from "@/components/mainUI/AboutMissionVision";
+import AboutMissionVision from "@/components/mainUI/AboutMissionVision";
 import AboutOurBoards from "@/components/mainUI/AboutOurBoards";
-import AboutSubFooter  from "@/components/mainUI/AboutSubFooter";
+import AboutSubFooter from "@/components/mainUI/AboutSubFooter";
+import AboutWhatDoWeDo from "@/components/mainUI/AboutWhatDoWeDo";
 import React from "react";
 
 const About = () => {
   return (
     <main>
       <AboutHeroSection />
-      <AboutMissionVision/>
-      <AboutHowDoWeWork/>
-      <AboutOurBoards/>
-      <AboutSubFooter/>
+      <AboutMissionVision />
+      <AboutWhatDoWeDo />
+      <AboutHowDoWeWork />
+      <AboutOurBoards />
+      <AboutSubFooter />
     </main>
   );
 };
