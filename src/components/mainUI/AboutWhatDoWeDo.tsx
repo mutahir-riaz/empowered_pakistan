@@ -6,7 +6,7 @@ export default function AboutWhatDoWeDo() {
   const values = [
     {
       icon: BookOpen,
-      title: "Counseling Students",
+      title: "Counseling Students Towards Betterment",
       description:
         "Providing guidance to help them make informed academic and career choices.",
     },

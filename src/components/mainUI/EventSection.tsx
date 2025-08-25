@@ -64,23 +64,25 @@ export function EventsSection() {
   const renderEventCard = (event: any, isPast: boolean = false) => (
     <Card
       key={event.name}
-      className={`shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${
-        isPast ? "opacity-75" : ""
+      className={`shadow-lg hover:shadow-xl relative ${
+        isPast
+          ? "opacity-75 transition-all duration-300 hover:-translate-y-1"
+          : ""
       }`}
     >
-      <CardContent className="p-6">
-        <h3 className="text-xl mb-3 text-[#0a192f]">{event.name}</h3>
+      <CardContent className="p-6 pb-10">
+        <h3 className="text-xl mb-3 text-ourBlack">{event.name}</h3>
 
         <div className="space-y-2 mb-4">
-          <div className="flex items-center text-gray-600">
+          <div className="flex items-center text-ourGray">
             <Calendar className="w-4 h-4 mr-2" />
             {event.date}
           </div>
-          <div className="flex items-center text-gray-600">
+          <div className="flex items-center text-ourGray">
             <Clock className="w-4 h-4 mr-2" />
             {event.time}
           </div>
-          <div className="flex items-center text-gray-600">
+          <div className="flex items-center text-ourGray">
             <MapPin className="w-4 h-4 mr-2" />
             {event.location}
           </div>
@@ -88,11 +90,9 @@ export function EventsSection() {
 
         {!isPast && (
           <Button
-            className={`w-full rounded-full ${
-              event.type === "webinar"
-                ? "bg-ourSkyBlue hover:bg-[#00acc1]"
-                : "bg-[#ff9800] hover:bg-[#e68900]"
-            } text-white`}
+            className="absolute bottom-6 left-1/2 -translate-x-1/2 w-48 rounded-full 
+                 bg-ourSkyBlue hover:bg-ourDarkBlue
+                 text-white"
           >
             {event.type === "webinar" ? "Join Webinar" : "Volunteer"}
           </Button>
@@ -104,7 +104,7 @@ export function EventsSection() {
   return (
     <section className="py-20 w-full bg-ourBlue">
       <div className="container mx-auto px-6 space-y-10">
-        <SubHeading text="Events"/>
+        <SubHeading text="Events" />
         <Tabs defaultValue="upcoming" className="max-w-6xl mx-auto">
           <TabsList className="grid w-full grid-cols-2 mb-8 bg-white">
             <TabsTrigger

@@ -65,9 +65,12 @@ export default function FeaturedOppurtunity() {
   };
 
   return (
-    <section className="py-20 bg-ourLightBlue w-full">
+    <section
+      className="py-20 bg-ourLightBlue w-full"
+      id="featured-oppurtunities"
+    >
       <div className="container mx-auto px-6">
-        <SubHeading text="Featured Oppurtunities" className="mb-5"/>
+        <SubHeading text="Featured Oppurtunities" className="mb-5" />
         <Tabs defaultValue="all" className="w-full">
           <TabsList className="flex flex-wrap justify-center bg-ourLightBlue mx-auto gap-3 mb-12">
             {filters.map((filter) => (
@@ -89,14 +92,14 @@ export default function FeaturedOppurtunity() {
                     (opportunity, index) => (
                       <Card
                         key={index}
-                        className="shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+                        className="shadow-lg hover:shadow-xl relative pb-14"
                       >
                         <CardContent className="p-6">
                           <div className="mb-4">
                             <Badge className="bg-ourOrange text-white mb-2">
                               {opportunity.category}
                             </Badge>
-                            <h3 className="text-xl mb-2 text-[#0a192f]">
+                            <h3 className="text-xl mb-2 text-ourBlack">
                               {opportunity.title}
                             </h3>
                           </div>
@@ -114,28 +117,28 @@ export default function FeaturedOppurtunity() {
                               ))}
                             </div>
 
-                            <div className="flex items-center text-sm text-gray-600">
+                            <div className="flex items-center text-sm text-ourGray">
                               <MapPin className="w-4 h-4 mr-1" />
                               {opportunity.location}
                             </div>
 
-                            <div className="flex items-center text-sm text-gray-600">
+                            <div className="flex items-center text-sm text-ourGray">
                               <Calendar className="w-4 h-4 mr-1" />
                               {opportunity.date}
                             </div>
 
-                            <div className="flex items-center text-sm text-gray-600">
+                            <div className="flex items-center text-sm text-ourGray">
                               <DollarSign className="w-4 h-4 mr-1" />
                               {opportunity.cost}
                             </div>
 
-                            <div className="flex items-center text-sm text-gray-600">
+                            <div className="flex items-center text-sm text-ourGray">
                               <Users className="w-4 h-4 mr-1" />
                               {opportunity.participants}
                             </div>
                           </div>
 
-                          <Button className="w-full bg-ourSkyBlue hover:bg-[#00acc1] text-white rounded-full">
+                          <Button className="absolute bottom-8 left-1/2 -translate-x-1/2  w-48 bg-ourSkyBlue hover:bg-[#00acc1] text-white rounded-full">
                             View Opportunity
                           </Button>
                         </CardContent>

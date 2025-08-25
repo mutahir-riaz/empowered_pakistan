@@ -3,14 +3,14 @@ import { Button } from "../ui/button";
 import { Calendar, ArrowDown } from "lucide-react";
 import Heading from "../ui/Heading";
 
-export default function Hero() {
-  const scrollToApplyNow = () => {
-    const element = document.getElementById("apply-now");
+export default function EventsHero() {
+  const scrollToUpcomingEvents = () => {
+    const element = document.getElementById("upcoming-events");
     element?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const scrollToOppurtunities = () => {
-    const element = document.getElementById("featured-oppurtunities");
+  const scrollToPastEvents = () => {
+    const element = document.getElementById("past-events");
     element?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -22,35 +22,35 @@ export default function Hero() {
           <div className="space-y-8">
             <div className="space-y-4">
               <Heading
-                text="EmpowerED Pakistan Shaping Future"
+                text="Empowering Students Through Experiences"
                 className="text-left"
                 colorLastWord={true}
               />
               <p className="text-xl text-ourGray leading-relaxed max-w-2xl">
-                We are a youth-led organization working to unlock student
-                potential by bridging the divide between talent, guidance and
-                opportunity.
+                Discover impactful events that connect, guide, and inspire
+                students across Pakistan. Join us in creating meaningful
+                experiences that shape futures.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
-                onClick={scrollToApplyNow}
+                onClick={scrollToUpcomingEvents}
                 size="lg"
                 className="bg-ourDarkBlue hover:bg-ourDarkBlue/90 text-white px-8 py-4 rounded-full shadow-lg transition-all duration-300 hover:shadow-xl flex items-center gap-2 cursor-pointer"
               >
                 <Calendar className="w-5 h-5" />
-                Apply as Volunteer
+                Upcoming Events
                 <ArrowDown className="w-4 h-4" />
               </Button>
 
               <Button
                 variant="outline"
-                onClick={scrollToOppurtunities}
+                onClick={scrollToPastEvents}
                 size="lg"
                 className="border-2 border-ourDarkBlue text-ourDarkBlue hover:bg-ourDarkBlue hover:text-white px-8 py-4 rounded-full transition-all duration-300 cursor-pointer"
               >
-                Featured Oppurtunities
+                View Past Events
               </Button>
             </div>
           </div>

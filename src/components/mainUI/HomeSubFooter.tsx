@@ -2,7 +2,7 @@ import { Button } from "../ui/button";
 
 export default function HomeSubFooter() {
   return (
-    <section className="py-20 w-full bg-gradient-to-r from-ourSkyBlue to-ourDarkBlue text-white">
+    <section className="py-20 w-full bg-gradient-to-r from-ourSkyBlue to-ourDarkBlue text-white" id="apply-now">
       <div className="container mx-auto px-6 text-center">
         <h2 className="text-4xl md:text-5xl mb-6">
           Ready to Be a Changemaker?
