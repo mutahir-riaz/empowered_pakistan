@@ -1,6 +1,6 @@
 "use client";
 import { EventsSection } from "@/components/mainUI/EventSection";
-import FeaturedOppurtunity from "@/components/mainUI/FeaturedOppurtunity";
+import OppurtunitiesSection from "@/components/mainUI/OpportunitiesSection";
 import GallerySection from "@/components/mainUI/GallerySection";
 import Hero from "@/components/mainUI/Hero";
 import HomeSubFooter from "@/components/mainUI/HomeSubFooter";
@@ -18,7 +18,7 @@ const Page = () => {
       <ImpactNumbers />
       <Testimonail />
       <TeamSection />
-      <FeaturedOppurtunity />
+      <OppurtunitiesSection />
       <EventsSection />
       <GallerySection />
       <HomeSubFooter />

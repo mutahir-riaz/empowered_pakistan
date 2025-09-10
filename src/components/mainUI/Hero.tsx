@@ -9,8 +9,8 @@ export default function Hero() {
     element?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const scrollToOppurtunities = () => {
-    const element = document.getElementById("featured-oppurtunities");
+  const scrollToOpportunities = () => {
+    const element = document.getElementById("featured-opportunities");
     element?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -46,11 +46,11 @@ export default function Hero() {
 
               <Button
                 variant="outline"
-                onClick={scrollToOppurtunities}
+                onClick={scrollToOpportunities}
                 size="lg"
                 className="border-2 border-ourDarkBlue text-ourDarkBlue hover:bg-ourDarkBlue hover:text-white px-8 py-4 rounded-full transition-all duration-300 cursor-pointer"
               >
-                Featured Oppurtunities
+                Featured Opportunities
               </Button>
             </div>
           </div>

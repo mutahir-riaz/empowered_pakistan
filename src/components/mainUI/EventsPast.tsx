@@ -13,61 +13,9 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/Carousel";
+} from "../../components/ui/carousel";
 import React from "react";
-
-const pastEvents = [
-  {
-    id: 1,
-    title: "Leadership Summit 2023",
-    date: "December 2023",
-    image:
-      "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=250&fit=crop",
-    outcome: "250+ students empowered with leadership skills",
-    participants: 250,
-    location: "Karachi",
-  },
-  {
-    id: 2,
-    title: "Digital Skills Workshop",
-    date: "November 2023",
-    image:
-      "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop",
-    outcome: "180 students learned essential digital skills",
-    participants: 180,
-    location: "Lahore",
-  },
-  {
-    id: 3,
-    title: "Scholarship Fair",
-    date: "October 2023",
-    image:
-      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&h=250&fit=crop",
-    outcome: "90% participants found suitable scholarships",
-    participants: 300,
-    location: "Islamabad",
-  },
-  {
-    id: 4,
-    title: "Career Mentorship Day",
-    date: "September 2023",
-    image:
-      "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=250&fit=crop",
-    outcome: "150+ mentorship connections formed",
-    participants: 200,
-    location: "Online",
-  },
-  {
-    id: 5,
-    title: "Youth Innovation Challenge",
-    date: "August 2023",
-    image:
-      "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=400&h=250&fit=crop",
-    outcome: "50 innovative project ideas presented",
-    participants: 120,
-    location: "Karachi",
-  },
-];
+import eventsData from "@/data/events";
 
 export default function EventsPast() {
   const plugin = React.useRef(
@@ -93,13 +41,13 @@ export default function EventsPast() {
           onMouseEnter={() => plugin.current.stop()}
           onMouseLeave={() => plugin.current.play()}
         >
-          <CarouselContent>
-            {pastEvents.map((event) => (
+          <CarouselContent className="min-h-[500px]">
+            {eventsData.past.map((event) => (
               <CarouselItem
                 key={event.id}
                 className="md:basis-1/2 lg:basis-1/3 pl-4"
               >
-                <Card className="overflow-hidden border-0 select-none">
+                <Card className="overflow-hidden shadow-md pt-0 border-0 select-none">
                   <div className="relative">
                     <Image
                       src={event.image}

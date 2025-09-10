@@ -14,7 +14,7 @@ export default function Header() {
     { label: "Home", value: "/" },
     { label: "About", value: "/about" },
     { label: "Events", value: "/events" },
-    { label: "Oppurtunities", value: "/oppurtunities" },
+    { label: "Opportunities", value: "/opportunities" },
     { label: "Gallery", value: "/gallery" },
   ];
 
