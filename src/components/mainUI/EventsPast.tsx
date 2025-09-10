@@ -99,7 +99,7 @@ export default function EventsPast() {
                 key={event.id}
                 className="md:basis-1/2 lg:basis-1/3 pl-4"
               >
-                <Card className="overflow-hidden border-0">
+                <Card className="overflow-hidden border-0 select-none">
                   <div className="relative">
                     <Image
                       src={event.image}
