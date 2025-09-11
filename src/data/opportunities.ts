@@ -1,4 +1,3 @@
-
 const opportunities = [
   {
     id: 1,

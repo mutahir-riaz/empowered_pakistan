@@ -12,7 +12,7 @@ import React from "react";
 
 const Page = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center w-full min-h-screen">
       <Hero />
       <MissionVision />
       <ImpactNumbers />
