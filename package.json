@@ -1,12 +1,14 @@
 {
   "name": "empowered_pakistan_next",
   "version": "0.1.0",
+   "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+   "seed:opps": "node scripts/seed-opportunities.js"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.15",
@@ -18,10 +20,12 @@
     "@radix-ui/react-tabs": "^1.1.12",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.2.2",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.536.0",
+    "mongoose": "^8.18.1",
     "next": "15.3.0",
     "postcss": "^8.5.6",
     "react": "^19.0.0",
