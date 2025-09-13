@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 export default function Header() {
   const pathname = usePathname();
@@ -13,6 +14,8 @@ export default function Header() {
     { label: "Home", value: "/" },
     { label: "About", value: "/about" },
     { label: "Events", value: "/events" },
+    { label: "Opportunities", value: "/opportunities" },
+    { label: "Gallery", value: "/gallery" },
   ];
 
   return (
@@ -21,26 +24,30 @@ export default function Header() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-ourDarkBlue rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">E</span>
-            </div>
+            <Image
+              src="/cropLogo.png"
+              alt="Logo"
+              width={50}
+              height={50}
+              className="w-[50px] h-[50px]"
+            />
             <div>
-              <h1 className="text-xl font-bold text-[#0D1B2A]">
-                Empowered Pakistan
+              <h1 className="text-xl font-bold text-ourBlack">
+                EmpowerED Pakistan
               </h1>
             </div>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-4">
             {navItems.map((item) => (
               <Link
                 href={item.value}
                 key={item.value}
-                className={`transition-colors duration-200 text-nowrap ${
+                className={`px-3 py-2 rounded-lg transition-all duration-300 ${
                   pathname === item.value
-                    ? "text-ourDarkBlue font-semibold"
-                    : "text-ourGray hover:text-ourDarkBlue"
+                    ? "bg-ourDarkBlue text-white"
+                    : "text-ourGray hover:bg-ourDarkBlue hover:text-white"
                 }`}
               >
                 {item.label}
@@ -48,11 +55,11 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Donate Button */}
+          {/* Join Us Button */}
           <div className="hidden lg:block">
             <Link
               href=""
-              className="bg-ourOrange hover:bg-ourDarkOrange text-white px-5 py-[6px] rounded-full shadow-lg transition-all duration-200 text-nowrap"
+              className="bg-ourOrange hover:bg-ourDarkOrange text-white px-3 py-[9px] rounded-lg transition-all duration-200 text-nowrap"
             >
               Join Us
             </Link>
@@ -80,16 +87,16 @@ export default function Header() {
                   href={item.value}
                   key={item.value}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`text-center transition-colors duration-200 ${
+                  className={`w-fit px-3 py-2 rounded-lg mx-auto transition-all duration-300 ${
                     pathname === item.value
-                      ? "text-ourDarkBlue font-semibold"
-                      : "text-ourGray hover:text-ourDarkBlue"
+                      ? "bg-ourDarkBlue text-white"
+                      : "text-ourGray hover:bg-ourDarkBlue hover:text-white"
                   }`}
                 >
                   {item.label}
                 </Link>
               ))}
-              <Button className="bg-ourOrange hover:bg-ourDarkOrange text-white px-6 py-2 rounded-full shadow-lg transition-all duration-200 w-fit mx-auto">
+              <Button className="bg-ourOrange hover:bg-ourDarkOrange text-white px-6 py-2 rounded-lg shadow-lg transition-all duration-200 w-fit mx-auto">
                 Join Us
               </Button>
             </nav>

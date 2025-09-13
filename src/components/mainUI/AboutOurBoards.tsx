@@ -27,7 +27,7 @@ export default function AboutOurBoards() {
   ];
 
   return (
-    <section className="py-20 bg-ourLightBlue w-full">
+    <section className="py-20 bg-ourBlue w-full">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
@@ -43,7 +43,7 @@ export default function AboutOurBoards() {
               return (
                 <Card
                   key={index}
-                  className="relative pt-5 pb-[70px] px-[2px] text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-0 shadow-lg"
+                  className="relative pt-5 pb-[70px] px-[2px] text-center hover:shadow-xl border-0 shadow-lg"
                 >
                   <CardContent className="space-y-6">
                     <div className="flex justify-center"></div>

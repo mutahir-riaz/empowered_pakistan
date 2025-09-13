@@ -1,46 +1,57 @@
-import React from "react";
-import { Card, CardContent } from "../ui/card";
-import { Target, Eye } from "lucide-react";
+"use client";
 
-const MissionVision = () => {
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import SubHeading from "../ui/SubHeading";
+import Link from "next/link";
+
+export default function MissionVission() {
   return (
-    <section className="py-20 w-full bg-ourLightBlue">
-      <div className="container mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <Card className="p-8 text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <CardContent className="pt-6">
-              <div className="mb-6">
-                <Target className="w-16 h-16 mx-auto text-[#00bcd4]" />
-              </div>
-              <h3 className="text-2xl font-bold mb-4 text-[#0a192f]">Our Mission</h3>
-              <p className="text-gray-600 leading-relaxed">
-                To advance equality in access to educational opportunities by
-                guiding students, connecting them with opportunities to outshine
-                academically and creating opportunities where gaps exist.
-              </p>
-            </CardContent>
-          </Card>
+    <section className="min-h-screen px-6 py-20 w-full bg-ourLightBlue">
+      <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg">
+            <Image
+              src="/gallery1.jpg"
+              alt="Young leaders collaborating on community projects"
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
+        </div>
 
-          <Card className="p-8 text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <CardContent className="pt-6">
-              <div className="mb-6">
-                <Eye className="w-16 h-16 mx-auto text-[#ff9800]" />
-              </div>
-              <h3 className="text-2xl font-bold mb-4 text-[#0a192f]">Our Vision</h3>
-              <p className="text-gray-600 leading-relaxed">
-                We envision a Pakistan where a student's future isn't defined by
-                where they were born, what school they went to, or who they know
-                but by who they are, what they dream of, and what they're
-                capable of. A Pakistan where students from remote villages and
-                crowded cities alike have access to the same doors, doors that
-                open to discovery, mentorship, opportunity, and hope.
+        <div className="space-y-8">
+          <SubHeading text="Mission & Vision" className="lg:!text-left !p-0" />
+          <div className="space-y-6">
+            <div>
+              <p className="text-center lg:!text-left text-ourGray leading-relaxed">
+                ~ Our mission is to advance equality in access to educational
+                opportunities by guiding students, connecting them with
+                opportunities to outshine academically and creating
+                opportunities where gaps exist.
               </p>
-            </CardContent>
-          </Card>
+            </div>
+
+            <div>
+              <p className="text-center lg:!text-left text-ourGray leading-relaxed">
+                ~ Our Vision is a Pakistan where a student's future isn't
+                defined by where they were born, what school they went to, or
+                who they know but by who they are, what they dream of, and what
+                they're capable of. A Pakistan where students from remote
+                villages and crowded cities alike have access to the same doors,
+                doors that open to discovery, mentorship, opportunity, and hope.
+              </p>
+            </div>
+          </div>
+          <Button
+            size="lg"
+            className="w-fit mx-auto bg-ourDarkBlue hover:bg-ourDarkBlue/90 text-white px-8 py-4 rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl flex items-center lg:inline-flex cursor-pointer"
+          >
+            <Link href="/">Become Volunteer</Link>
+          </Button>
         </div>
       </div>
     </section>
   );
-};
-
-export default MissionVision;
+}
