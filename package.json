@@ -1,12 +1,14 @@
 {
   "name": "empowered_pakistan_next",
   "version": "0.1.0",
+   "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+   "seed:opps": "node scripts/seed-opportunities.js"
   },
 
   "dependencies": {

@@ -1,17 +1,40 @@
 import dbConnect from "@/lib/db";
 import Opportunities from "@/models/Opportunities";
 
-// GET all opportunities
-export async function GET() {
-  await dbConnect();
-  const opportunities = await Opportunities.find();
-  return Response.json(opportunities);
-}
+// GET /api/opportunities?featured=true|false&search=...&limit=12
+export async function GET(req) {
+  try {
+    await dbConnect();
 
-// POST new opportunity
-export async function POST(req) {
-  await dbConnect();
-  const data = await req.json();
-  const opportunity = await Opportunities.create(data);
-  return Response.json(opportunity, { status: 201 });
+    const { searchParams } = new URL(req.url);
+    const featuredParam = (searchParams.get("featured") || "").toLowerCase();
+    const search = (searchParams.get("search") || "").trim();
+    const limit = Math.max(1, parseInt(searchParams.get("limit") ?? "12", 10) || 12);
+
+    const filter = {};
+    if (featuredParam === "true" || featuredParam === "1") filter.featured = true;
+    if (featuredParam === "false" || featuredParam === "0") filter.featured = false;
+
+    if (search) {
+      filter.$or = [
+        { title:        { $regex: search, $options: "i" } },
+        { organization: { $regex: search, $options: "i" } },
+        { type:         { $regex: search, $options: "i" } },
+        { location:     { $regex: search, $options: "i" } },
+        { tags:         { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const items = await Opportunities.find(filter)
+      .sort({ featured: -1, title: 1 })
+      .limit(limit)
+      .lean();
+
+    return new Response(JSON.stringify(items), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (err) {
+    return new Response(JSON.stringify({ message: err.message }), { status: 500 });
+  }
 }
