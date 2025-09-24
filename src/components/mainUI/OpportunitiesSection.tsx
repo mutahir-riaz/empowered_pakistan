@@ -4,10 +4,45 @@ import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { Star, Globe, ExternalLink, Calendar } from "lucide-react";
 import SubHeading from "../ui/SubHeading";
-import opportunities from "@/data/opportunities";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function OpportunitiesSection() {
+  interface Opportunity {
+    _id: string;
+    title: string;
+    organization: string;
+    description: string;
+    type: string; // Or a more specific union type like: 'Scholarship' | 'Internship' | 'Fellowship' | 'Competition' | 'Online Course'
+    deadline: string;
+    location: string;
+    featured: boolean;
+    tags: string[]; // An array of strings
+  }
+  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
+  const fetchOpportunities = async () => {
+    try {
+      const fetchedData = await fetch("/api/opportunities");
+      const fetchedOpportunites = await fetchedData.json();
+      console.log("fetchedOpportunites: ", fetchedOpportunites); // Debugging line
+      if (Array.isArray(fetchedOpportunites)) {
+        setOpportunities(fetchedOpportunites);
+      } else {
+        console.error(
+          "API /api/opportunities did not return an array:",
+          fetchedOpportunites
+        );
+        setOpportunities([]);
+      }
+    } catch (e) {
+      console.error("Failed to fetch opportunities:", e);
+      setOpportunities([]);
+    } finally {
+    }
+  };
+  useEffect(() => {
+    fetchOpportunities();
+  }, []);
   return (
     <section
       className="py-20 bg-ourLightBlue w-full"
@@ -29,7 +64,7 @@ export default function OpportunitiesSection() {
                     (opportunity, index) =>
                       index <= 2 && (
                         <Card
-                          key={opportunity.id}
+                          key={opportunity._id}
                           className="group overflow-hidden bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-2xl border-1 border-ourDarkBlue transition duration-300"
                         >
                           {/* Featured Banner */}
@@ -107,13 +142,13 @@ export default function OpportunitiesSection() {
                       )
                   )
               ) : (
-                <h3 className="text-4xl md:col-span-2 lg:col-span-3 text-center w-full p-4">
+                <h3 className="text-xl md:col-span-2 lg:col-span-3 text-center w-full p-4">
                   No Featured Opportunities Found
                 </h3>
               )}
             </div>
           ) : (
-            <h3 className="text-4xl md:col-span-2 lg:col-span-3 text-center w-full p-4">
+            <h3 className="text-xl md:col-span-2 lg:col-span-3 text-center w-full p-4 py-10">
               No Opportunities Found
             </h3>
           )}
@@ -123,7 +158,7 @@ export default function OpportunitiesSection() {
           size="lg"
           className="w-fit mx-auto bg-ourDarkBlue hover:bg-ourDarkBlue/90 text-white px-8 py-4 rounded-full shadow-lg transition-all duration-300 hover:shadow-xl flex items-center gap-2 cursor-pointer"
         >
-          <Link href="/opportunities">View More Opportunities</Link>
+          <Link href="/opportunities">View All Opportunities</Link>
         </Button>
       </div>
     </section>

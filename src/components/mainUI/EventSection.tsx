@@ -10,26 +10,85 @@ import {
   Users,
 } from "lucide-react";
 import SubHeading from "../ui/SubHeading";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "../ui/carousel";
+import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import Autoplay from "embla-carousel-autoplay";
 import Link from "next/link";
 import { Badge } from "../ui/badge";
-import eventsData from "../../data/events";
 
-export function EventsSection() {
+export default function EventsSection() {
   const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
+    Autoplay({ delay: 2000, stopOnInteraction: true, stopOnMouseEnter: true })
   );
 
+  interface Event {
+    _id: string;
+    title: string;
+    date: string;
+    time: string;
+    location: string;
+    type: string;
+    description: string;
+    image: string;
+    tags?: string[]; // Optional for past events
+    registrationOpen?: boolean; // Optional for past events
+    outcome?: string; // Only for past events
+    participants?: number; // Only for past events
+    isPast: boolean;
+  }
+
+  interface EventsData {
+    upcomingEvents: Event[];
+    pastEvents: Event[];
+  }
+
+  const [events, setEvents] = useState<EventsData>({
+    upcomingEvents: [],
+    pastEvents: [],
+  });
+  const fetchEvents = async () => {
+    try {
+      const fetchedData = await fetch("/api/events");
+      const fetchedEvents = await fetchedData.json();
+      console.log("fetchedEvents: ", fetchedEvents);
+      if (Array.isArray(fetchedEvents)) {
+        const upcomingEvents = fetchedEvents.filter((event) => {
+          if (event.isPast === false) {
+            return event;
+          }
+        });
+        const pastEvents = fetchedEvents.filter((event) => {
+          if (event.isPast === true) {
+            return event;
+          }
+        });
+        setEvents({
+          upcomingEvents,
+          pastEvents,
+        });
+      } else {
+        console.error(
+          "API /api/events did not return an array:",
+          fetchedEvents
+        );
+        setEvents({ upcomingEvents: [], pastEvents: [] });
+      }
+    } catch (e) {
+      console.error("Failed to fetch events:", e);
+      setEvents({ upcomingEvents: [], pastEvents: [] });
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  useEffect(() => {
+    console.log("events: ", events);
+  }, [events]);
   return (
     <section className="py-20 w-full bg-ourBlue">
       <div className="container mx-auto px-6 space-y-10">
@@ -51,8 +110,7 @@ export function EventsSection() {
           </TabsList>
           {/* --------------------- UPCOMING EVENTS --------------------- */}
           <TabsContent value="upcoming">
-            <div>
-              {/* Carousel */}
+            {events.upcomingEvents.length > 0 ? (
               <Carousel
                 className="w-full cursor-grab"
                 plugins={[plugin.current]}
@@ -60,13 +118,13 @@ export function EventsSection() {
                 onMouseLeave={() => plugin.current.play()}
               >
                 <CarouselContent className="min-h-[550px]">
-                  {eventsData.upcoming.map((event) => (
+                  {events.upcomingEvents.map((event, ind) => (
                     <CarouselItem
-                      key={event.id}
+                      key={event._id}
                       className="md:basis-1/2 lg:basis-1/3 pl-4"
                     >
                       <Card
-                        key={event.id}
+                        key={ind}
                         className="overflow-hidden shadow-md border-0 relative select-none pt-0"
                       >
                         <div className="relative">
@@ -78,7 +136,7 @@ export function EventsSection() {
                             className="w-full h-48 object-cover"
                           />
                           <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                            {event.tags.map((tag, index) => (
+                            {event.tags!.map((tag, index) => (
                               <Badge
                                 key={index}
                                 className="px-2 py-1 text-xs font-medium bg-ourOrange text-white"
@@ -136,14 +194,14 @@ export function EventsSection() {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
               </Carousel>
-            </div>
+            ) : (
+              <div className="w-fit mx-auto py-10">No Upcoming Events</div>
+            )}
           </TabsContent>
           {/* --------------------- PAST EVENTS --------------------- */}
           <TabsContent value="past">
-            <div>
+            {events.pastEvents.length > 0 ? (
               <Carousel
                 className="w-full cursor-grab"
                 plugins={[plugin.current]}
@@ -151,9 +209,9 @@ export function EventsSection() {
                 onMouseLeave={() => plugin.current.play()}
               >
                 <CarouselContent className="min-h-[500px]">
-                  {eventsData.past.map((event) => (
+                  {events.pastEvents.map((event) => (
                     <CarouselItem
-                      key={event.id}
+                      key={event._id}
                       className="md:basis-1/2 lg:basis-1/3 pl-4"
                     >
                       <Card className="overflow-hidden shadow-md border-0 select-none pt-0">
@@ -187,7 +245,7 @@ export function EventsSection() {
                             </div>
 
                             <div className="flex items-start gap-2 text-sm text-ourGray">
-                              <Award className="w-4 h-4 text-[#FFD662] mt-0.5" />
+                              <Award className="w-4 h-4 text-ourOrange mt-0.5" />
                               <span>{event.outcome}</span>
                             </div>
                           </div>
@@ -205,16 +263,16 @@ export function EventsSection() {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
               </Carousel>
-            </div>
+            ) : (
+              <div className="w-fit mx-auto py-10">No Past Events</div>
+            )}
           </TabsContent>
           <Button
             size="lg"
             className="w-fit mx-auto bg-ourDarkBlue hover:bg-ourDarkBlue/90 text-white px-8 py-4 rounded-full shadow-lg transition-all duration-300 hover:shadow-xl flex items-center gap-2 cursor-pointer"
           >
-            <Link href="/events">View More Events</Link>
+            <Link href="/events">View All Events</Link>
           </Button>
         </Tabs>
       </div>

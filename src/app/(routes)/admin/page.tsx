@@ -1,5 +1,4 @@
 // "use client";
-
 // import { useEffect, useState } from "react";
 // import { Button } from "@/components/ui/button";
 // import {
@@ -125,6 +124,7 @@
 //   // ------------------------------ handling events ------------------------------
 //   const handleCreateEvent = async (formData: FormData) => {
 //     try {
+//       const participantsValue = formData.get("participants") as string;
 //       const newEvent: Event = {
 //         title: formData.get("title") as string,
 //         date: formData.get("date") as string,
@@ -137,7 +137,9 @@
 //           (formData.get("tags") as string)
 //             ?.split(",")
 //             .map((tag) => tag.trim()) || [],
-//         registrationOpen: true,
+//         registrationOpen: formData.get("registrationOpen") === "on",
+//         outcome: formData.get("outcome") as string,
+//         participants: participantsValue ? Number(participantsValue) : undefined,
 //       };
 
 //       const response = await fetch("/api/admin/events", {
@@ -165,6 +167,7 @@
 //   const handleUpdateEvent = async (formData: FormData) => {
 //     if (!editingEvent) return;
 //     try {
+//       const participantsValue = formData.get("participants") as string;
 //       const updatedEvent: Event = {
 //         ...editingEvent,
 //         title: formData.get("title") as string,
@@ -177,6 +180,9 @@
 //           (formData.get("tags") as string)
 //             ?.split(",")
 //             .map((tag) => tag.trim()) || [],
+//         registrationOpen: formData.get("registrationOpen") === "on",
+//         outcome: formData.get("outcome") as string,
+//         participants: participantsValue ? Number(participantsValue) : undefined,
 //       };
 
 //       const response = await fetch(`/api/admin/events/${editingEvent._id}`, {
@@ -435,10 +441,21 @@
 //       setLoading(true);
 //       const fetchedData = await fetch("/api/events");
 //       const fetchedEvents = await fetchedData.json();
-//       console.log("fetchedEvents: ", fetchedEvents);
-//       setEvents(fetchedEvents);
+//       // console.log("fetchedEvents: ", fetchedEvents); // Debugging line
+//       if (Array.isArray(fetchedEvents)) {
+//         setEvents(fetchedEvents);
+//       } else {
+//         console.error(
+//           "API /api/events did not return an array:",
+//           fetchedEvents
+//         );
+//         setEvents([]); // Ensure it's always an array
+//         toast.error("Invalid data received for events.");
+//       }
 //     } catch (e) {
+//       console.error("Failed to fetch events:", e);
 //       toast.error("Failed to fetch events.");
+//       setEvents([]); // Ensure events is an array even on fetch error
 //     } finally {
 //       setLoading(false);
 //     }
@@ -448,10 +465,21 @@
 //       setLoading(true);
 //       const fetchedData = await fetch("/api/opportunities");
 //       const fetchedOpportunites = await fetchedData.json();
-//       console.log("fetchedOpportunites: ", fetchedOpportunites);
-//       setOpportunities(fetchedOpportunites);
+//       // console.log("fetchedOpportunites: ", fetchedOpportunites); // Debugging line
+//       if (Array.isArray(fetchedOpportunites)) {
+//         setOpportunities(fetchedOpportunites);
+//       } else {
+//         console.error(
+//           "API /api/opportunities did not return an array:",
+//           fetchedOpportunites
+//         );
+//         setOpportunities([]);
+//         toast.error("Invalid data received for opportunities.");
+//       }
 //     } catch (e) {
+//       console.error("Failed to fetch opportunities:", e);
 //       toast.error("Failed to fetch opportunities.");
+//       setOpportunities([]);
 //     } finally {
 //       setLoading(false);
 //     }
@@ -461,10 +489,21 @@
 //       setLoading(true);
 //       const fetchedData = await fetch("/api/gallery");
 //       const fetchedGallery = await fetchedData.json();
-//       console.log("fetchedGallery: ", fetchedGallery);
-//       setGallery(fetchedGallery);
+//       // console.log("fetchedGallery: ", fetchedGallery); // Debugging line
+//       if (Array.isArray(fetchedGallery)) {
+//         setGallery(fetchedGallery);
+//       } else {
+//         console.error(
+//           "API /api/gallery did not return an array:",
+//           fetchedGallery
+//         );
+//         setGallery([]);
+//         toast.error("Invalid data received for gallery items.");
+//       }
 //     } catch (e) {
+//       console.error("Failed to fetch gallery items:", e);
 //       toast.error("Failed to fetch gallery items.");
+//       setGallery([]);
 //     } finally {
 //       setLoading(false);
 //     }
@@ -563,6 +602,7 @@
 //                     </DialogDescription>
 //                   </DialogHeader>
 //                   <form
+//                     className="h-[400px] overflow-scroll overflow-x-hidden"
 //                     action={
 //                       editingEvent ? handleUpdateEvent : handleCreateEvent
 //                     }
@@ -594,7 +634,6 @@
 //                           <Input
 //                             id="date"
 //                             name="date"
-//                             type="date"
 //                             defaultValue={editingEvent?.date || ""}
 //                             required
 //                           />
@@ -634,11 +673,46 @@
 //                           defaultValue={editingEvent?.tags?.join(", ") || ""}
 //                         />
 //                       </div>
+//                       <div className="grid grid-cols-2 gap-4">
+//                         <div className="grid gap-2">
+//                           <Label htmlFor="participants">Participants</Label>
+//                           <Input
+//                             id="participants"
+//                             name="participants"
+//                             type="number"
+//                             defaultValue={editingEvent?.participants || ""}
+//                           />
+//                         </div>
+//                         <div className="flex items-center space-x-2 pt-6">
+//                           <input
+//                             type="checkbox"
+//                             id="registrationOpen"
+//                             name="registrationOpen"
+//                             defaultChecked={
+//                               editingEvent?.registrationOpen ?? true
+//                             }
+//                             className="rounded"
+//                           />
+//                           <Label htmlFor="registrationOpen">
+//                             Registration Open
+//                           </Label>
+//                         </div>
+//                       </div>
+//                       <div className="grid gap-2">
+//                         <Label htmlFor="outcome">Outcome</Label>
+//                         <Textarea
+//                           id="outcome"
+//                           name="outcome"
+//                           defaultValue={editingEvent?.outcome || ""}
+//                           placeholder="Describe the outcome of the event..."
+//                         />
+//                       </div>
 //                       <div>
 //                         <Label htmlFor="image">Image URL</Label>
 //                         <Input
 //                           id="image"
 //                           name="image"
+//                           defaultValue={editingEvent?.image || ""}
 //                           placeholder="https://example.com/image.jpg"
 //                           required
 //                         />
@@ -728,7 +802,7 @@
 //                       <div className="flex items-center space-x-1">
 //                         <Calendar className="h-4 w-4" />
 //                         <span>
-//                           {new Date(event.date).toLocaleDateString("en-GB")}
+//                           {event.date}
 //                         </span>
 //                       </div>
 //                       {event.time && (
@@ -737,7 +811,7 @@
 //                           <span>{event.time}</span>
 //                         </div>
 //                       )}
-//                       {event.participants && (
+//                       {typeof event.participants === "number" && (
 //                         <div className="flex items-center space-x-1">
 //                           <Users className="h-4 w-4" />
 //                           <span>{event.participants} participants</span>
@@ -1188,8 +1262,8 @@
 
 // export default AdminPage;
 
-"use client";
 
+"use client";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -1250,6 +1324,7 @@ interface Event {
   registrationOpen?: boolean;
   outcome?: string;
   participants?: number;
+  isPast?: boolean;
 }
 
 interface Opportunity {
@@ -1331,6 +1406,7 @@ const AdminPage = () => {
         registrationOpen: formData.get("registrationOpen") === "on",
         outcome: formData.get("outcome") as string,
         participants: participantsValue ? Number(participantsValue) : undefined,
+        isPast: formData.get("isPast") === "on",
       };
 
       const response = await fetch("/api/admin/events", {
@@ -1374,6 +1450,7 @@ const AdminPage = () => {
         registrationOpen: formData.get("registrationOpen") === "on",
         outcome: formData.get("outcome") as string,
         participants: participantsValue ? Number(participantsValue) : undefined,
+        isPast: formData.get("isPast") === "on",
       };
 
       const response = await fetch(`/api/admin/events/${editingEvent._id}`, {
@@ -1632,10 +1709,21 @@ const AdminPage = () => {
       setLoading(true);
       const fetchedData = await fetch("/api/events");
       const fetchedEvents = await fetchedData.json();
-      console.log("fetchedEvents: ", fetchedEvents);
-      setEvents(fetchedEvents);
+      // console.log("fetchedEvents: ", fetchedEvents); // Debugging line
+      if (Array.isArray(fetchedEvents)) {
+        setEvents(fetchedEvents);
+      } else {
+        console.error(
+          "API /api/events did not return an array:",
+          fetchedEvents
+        );
+        setEvents([]); // Ensure it's always an array
+        toast.error("Invalid data received for events.");
+      }
     } catch (e) {
+      console.error("Failed to fetch events:", e);
       toast.error("Failed to fetch events.");
+      setEvents([]); // Ensure events is an array even on fetch error
     } finally {
       setLoading(false);
     }
@@ -1645,10 +1733,21 @@ const AdminPage = () => {
       setLoading(true);
       const fetchedData = await fetch("/api/opportunities");
       const fetchedOpportunites = await fetchedData.json();
-      console.log("fetchedOpportunites: ", fetchedOpportunites);
-      setOpportunities(fetchedOpportunites);
+      // console.log("fetchedOpportunites: ", fetchedOpportunites); // Debugging line
+      if (Array.isArray(fetchedOpportunites)) {
+        setOpportunities(fetchedOpportunites);
+      } else {
+        console.error(
+          "API /api/opportunities did not return an array:",
+          fetchedOpportunites
+        );
+        setOpportunities([]);
+        toast.error("Invalid data received for opportunities.");
+      }
     } catch (e) {
+      console.error("Failed to fetch opportunities:", e);
       toast.error("Failed to fetch opportunities.");
+      setOpportunities([]);
     } finally {
       setLoading(false);
     }
@@ -1658,10 +1757,21 @@ const AdminPage = () => {
       setLoading(true);
       const fetchedData = await fetch("/api/gallery");
       const fetchedGallery = await fetchedData.json();
-      console.log("fetchedGallery: ", fetchedGallery);
-      setGallery(fetchedGallery);
+      // console.log("fetchedGallery: ", fetchedGallery); // Debugging line
+      if (Array.isArray(fetchedGallery)) {
+        setGallery(fetchedGallery);
+      } else {
+        console.error(
+          "API /api/gallery did not return an array:",
+          fetchedGallery
+        );
+        setGallery([]);
+        toast.error("Invalid data received for gallery items.");
+      }
     } catch (e) {
+      console.error("Failed to fetch gallery items:", e);
       toast.error("Failed to fetch gallery items.");
+      setGallery([]);
     } finally {
       setLoading(false);
     }
@@ -1760,7 +1870,7 @@ const AdminPage = () => {
                     </DialogDescription>
                   </DialogHeader>
                   <form
-                  className="h-[400px] overflow-scroll overflow-x-hidden"
+                    className="h-[400px] overflow-scroll overflow-x-hidden"
                     action={
                       editingEvent ? handleUpdateEvent : handleCreateEvent
                     }
@@ -1792,7 +1902,6 @@ const AdminPage = () => {
                           <Input
                             id="date"
                             name="date"
-                            type="date"
                             defaultValue={editingEvent?.date || ""}
                             required
                           />
@@ -1803,7 +1912,6 @@ const AdminPage = () => {
                             id="time"
                             name="time"
                             defaultValue={editingEvent?.time || ""}
-                            required
                           />
                         </div>
                       </div>
@@ -1877,6 +1985,17 @@ const AdminPage = () => {
                           required
                         />
                       </div>
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          id="isPast"
+                          name="isPast"
+                          defaultChecked={editingEvent?.isPast || false}
+                          className="rounded"
+                          required
+                        />
+                        <Label htmlFor="isPast">Is this a past event?</Label>
+                      </div>
                     </div>
                     <DialogFooter>
                       <Button type="submit">
@@ -1902,7 +2021,14 @@ const AdminPage = () => {
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div className="space-y-1">
-                        <CardTitle className="text-lg">{event.title}</CardTitle>
+                        <CardTitle className="text-lg flex items-center gap-2">
+                          {event.title}
+                          {event.isPast ? (
+                            <Badge variant="outline">Past</Badge>
+                          ):(
+                            <Badge variant="outline">Upcoming</Badge>
+                          )}
+                        </CardTitle>
                         <div className="flex items-center space-x-2">
                           <Badge variant="secondary">{event.type}</Badge>
                           {event.tags?.map((tag, ind) => (
@@ -1961,9 +2087,7 @@ const AdminPage = () => {
                       </div>
                       <div className="flex items-center space-x-1">
                         <Calendar className="h-4 w-4" />
-                        <span>
-                          {new Date(event.date).toLocaleDateString("en-GB")}
-                        </span>
+                        <span>{event.date}</span>
                       </div>
                       {event.time && (
                         <div className="flex items-center space-x-1">

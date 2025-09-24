@@ -14,7 +14,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../../components/ui/carousel";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import eventsData from "@/data/events";
 
 export default function EventsPast() {
@@ -22,8 +22,71 @@ export default function EventsPast() {
     Autoplay({ delay: 2000, stopOnInteraction: true })
   );
 
+  interface Event {
+    _id: string;
+    title: string;
+    date: string;
+    time: string;
+    location: string;
+    type: string;
+    description: string;
+    image: string;
+    tags?: string[]; // Optional for past events
+    registrationOpen?: boolean; // Optional for past events
+    outcome?: string; // Only for past events
+    participants?: number; // Only for past events
+    isPast: boolean;
+  }
+
+  interface EventsData {
+    upcomingEvents: Event[];
+    pastEvents: Event[];
+  }
+
+  const [events, setEvents] = useState<EventsData>({
+    upcomingEvents: [],
+    pastEvents: [],
+  });
+
+  const fetchEvents = async () => {
+    try {
+      const fetchedData = await fetch("/api/events");
+      const fetchedEvents = await fetchedData.json();
+      console.log("fetchedEvents: ", fetchedEvents);
+      if (Array.isArray(fetchedEvents)) {
+        const upcomingEvents = fetchedEvents.filter((event) => {
+          if (event.isPast === false) {
+            return event;
+          }
+        });
+        const pastEvents = fetchedEvents.filter((event) => {
+          if (event.isPast === true) {
+            return event;
+          }
+        });
+        setEvents({
+          upcomingEvents,
+          pastEvents,
+        });
+      } else {
+        console.error(
+          "API /api/events did not return an array:",
+          fetchedEvents
+        );
+        setEvents({ upcomingEvents: [], pastEvents: [] });
+      }
+    } catch (e) {
+      console.error("Failed to fetch events:", e);
+      setEvents({ upcomingEvents: [], pastEvents: [] });
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
   return (
-    <section className="py-20 w-full bg-ourBlue">
+    <section className="py-20 w-full bg-ourBlue" id="past-events">
       <div className="container mx-auto px-6">
         {/* Heading */}
         <div className="text-center mb-16">
@@ -42,9 +105,9 @@ export default function EventsPast() {
           onMouseLeave={() => plugin.current.play()}
         >
           <CarouselContent className="min-h-[500px]">
-            {eventsData.past.map((event) => (
+            {events.pastEvents.map((event) => (
               <CarouselItem
-                key={event.id}
+                key={event._id}
                 className="md:basis-1/2 lg:basis-1/3 pl-4"
               >
                 <Card className="overflow-hidden shadow-md pt-0 border-0 select-none">

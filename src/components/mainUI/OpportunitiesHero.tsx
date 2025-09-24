@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { Calendar, ArrowDown } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import Heading from "../ui/Heading";
 import { Input } from "../ui/input";
 import {
@@ -18,7 +18,7 @@ export default function OppurtunitiesHero() {
     const element = document.getElementById("all-oppurtunities");
     element?.scrollIntoView({ behavior: "smooth" });
   };
-  
+
   return (
     <section className="relative w-full min-h-[90vh] flex items-center bg-ourBlue overflow-hidden">
       {/* main container */}
@@ -45,40 +45,12 @@ export default function OppurtunitiesHero() {
                 and aspirations.
               </p>
             </div>
-
-            {/* Search Bar */}
-            <div className="bg-ourSkyBlue/20 backdrop-blur-sm rounded-2xl p-6">
-              <div className="grid md:grid-cols-4 gap-4">
-                <div className="md:col-span-2 relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-ourGray w-5 h-5" />
-                  <Input
-                    placeholder="Search opportunities..."
-                    className="pl-10 bg-white border-0 text-gray-900 placeholder:text-gray-500 h-12 rounded-xl focus:border-0 focus:ring-0 focus:outline-none"
-                  />
-                </div>
-
-                <Select>
-                  <SelectTrigger className="bg-white border-0 text-gray-900 py-6 px-5 rounded-xl">
-                    <SelectValue placeholder="Category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="scholarships">Scholarships</SelectItem>
-                    <SelectItem value="internships">Internships</SelectItem>
-                    <SelectItem value="competitions">Competitions</SelectItem>
-                    <SelectItem value="fellowships">Fellowships</SelectItem>
-                    <SelectItem value="courses">Online Courses</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Button className="bg-ourOrange hover:bg-ourDarkOrange text-white h-12 rounded-xl font-semibold shadow-lg transition-all duration-300">
-                  <Filter className="w-4 h-4 mr-2" />
-                  Search
-                </Button>
-              </div>
-            </div>
-
-            <Button className="w-48 rounded-full transition-all duration-300 bg-ourSkyBlue hover:bg-ourDarkBlue text-white ">
+            <Button
+              onClick={scrollToAllOppurtunities}
+              className="w-48 rounded-full transition-all duration-300 bg-ourSkyBlue hover:bg-ourDarkBlue text-white "
+            >
               View All Oppurtunities
+              <ArrowDown className="w-4 h-4" />
             </Button>
           </div>
           {/* image */}

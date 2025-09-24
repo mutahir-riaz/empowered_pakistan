@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
@@ -5,8 +6,73 @@ import { Calendar, Clock, MapPin } from "lucide-react";
 import Image from "next/image";
 import SubHeading from "../ui/SubHeading";
 import eventsData from "@/data/events";
+import { useEffect, useState } from "react";
 
 export default function EventsUpcoming() {
+  interface Event {
+    _id: string;
+    title: string;
+    date: string;
+    time: string;
+    location: string;
+    type: string;
+    description: string;
+    image: string;
+    tags?: string[]; // Optional for past events
+    registrationOpen?: boolean; // Optional for past events
+    outcome?: string; // Only for past events
+    participants?: number; // Only for past events
+    isPast: boolean;
+  }
+
+  interface EventsData {
+    upcomingEvents: Event[];
+    pastEvents: Event[];
+  }
+
+  const [events, setEvents] = useState<EventsData>({
+    upcomingEvents: [],
+    pastEvents: [],
+  });
+
+  const fetchEvents = async () => {
+    try {
+      const fetchedData = await fetch("/api/events");
+      const fetchedEvents = await fetchedData.json();
+      console.log("fetchedEvents: ", fetchedEvents);
+      if (Array.isArray(fetchedEvents)) {
+        const upcomingEvents = fetchedEvents.filter((event) => {
+          if (event.isPast === false) {
+            return event;
+          }
+        });
+        const pastEvents = fetchedEvents.filter((event) => {
+          if (event.isPast === true) {
+            return event;
+          }
+        });
+        setEvents({
+          upcomingEvents,
+          pastEvents,
+        });
+      } else {
+        console.error(
+          "API /api/events did not return an array:",
+          fetchedEvents
+        );
+        setEvents({ upcomingEvents: [], pastEvents: [] });
+      }
+    } catch (e) {
+      console.error("Failed to fetch events:", e);
+      setEvents({ upcomingEvents: [], pastEvents: [] });
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
   return (
     <section id="upcoming-events" className="py-20 w-full bg-ourLightBlue">
       <div className="container mx-auto px-6">
@@ -19,9 +85,9 @@ export default function EventsUpcoming() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {eventsData.upcoming.map((event) => (
+          {events.upcomingEvents.map((event) => (
             <Card
-              key={event.id}
+              key={event._id}
               className="overflow-hidden shadow-lg hover:shadow-xl border-0 relative pt-0"
             >
               <div className="relative">
@@ -33,7 +99,7 @@ export default function EventsUpcoming() {
                   className="w-full h-48 object-cover"
                 />
                 <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                  {event.tags.map((tag, index) => (
+                  {event.tags!.map((tag, index) => (
                     <Badge
                       key={index}
                       className="px-2 py-1 text-xs font-medium bg-ourOrange text-white"

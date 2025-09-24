@@ -34,9 +34,8 @@ export async function PATCH(req, { params }) {
     await dbConnect();
 
     const data = await req.json();
-    if (data.date) data.date = new Date(data.date);
-
-    const updated = await Events.findByIdAndUpdate(params.id, data, {
+    const { id } = await params;
+    const updated = await Events.findByIdAndUpdate(id, data, {
       new: true, runValidators: true,
     }).lean();
 
@@ -54,7 +53,8 @@ export async function DELETE(req, { params }) {
     if (!isAdmin(req)) return unauthorized();
     await dbConnect();
 
-    const deleted = await Events.findByIdAndDelete(params.id);
+      const { id } = await params;
+    const deleted = await Events.findByIdAndDelete(id);
     if (!deleted) return new Response(JSON.stringify({ message: "Not found" }), { status: 404 });
 
     return new Response(JSON.stringify({ ok: true }), { status: 200 });

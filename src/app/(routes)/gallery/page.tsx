@@ -1,3 +1,4 @@
+"use client"
 import PageHeader from "@/components/mainUI/PageHeader";
 import {
   Card,
@@ -10,18 +11,50 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import galleryData from "@/data/gallery";
+import { useEffect, useState } from "react";
 
 const Gallery = () => {
+  interface Gallery {
+    _id: string;
+    title: string;
+    description: string;
+    image: string;
+    link: string;
+  }
+  const [gallery, setGallery] = useState<Gallery[]>([]);
+  const fetchGallery = async () => {
+    try {
+      const fetchedData = await fetch("/api/gallery");
+      const fetchedGallery = await fetchedData.json();
+      // console.log("fetchedGallery: ", fetchedGallery); // Debugging line
+      if (Array.isArray(fetchedGallery)) {
+        setGallery(fetchedGallery);
+      } else {
+        console.error(
+          "API /api/gallery did not return an array:",
+          fetchedGallery
+        );
+        setGallery([]);
+      }
+    } catch (e) {
+      console.error("Failed to fetch gallery items:", e);
+      setGallery([]);
+    } finally {
+    }
+  };
+  useEffect(() => {
+    fetchGallery();
+  },[]);
   return (
     <main className="min-h-screen">
       <PageHeader heading="Gallery" title="Gallery" />
 
       <section className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {galleryData.map((item) => (
+        {
+          gallery.length > 0 ? (<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {gallery.map((item) => (
             <Card
-              key={item.id}
+              key={item._id}
               className="group hover:shadow-lg transition-shadow duration-300 relative !pt-0"
             >
               <CardHeader className="p-0">
@@ -53,7 +86,12 @@ const Gallery = () => {
               </CardFooter>
             </Card>
           ))}
-        </div>
+        </div>): (
+          <div className="w-fit mx-auto py-10">
+            No Gallery Items Found
+          </div>
+        )
+        }
       </section>
     </main>
   );

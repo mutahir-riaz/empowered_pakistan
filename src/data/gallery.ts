@@ -1,4 +1,4 @@
-  const galleryData = [
+const galleryData = [
     {
       id: 1,
       title: "Scholarship Programs",

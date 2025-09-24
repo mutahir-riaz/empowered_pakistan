@@ -47,7 +47,7 @@ const Heading = ({
       className="w-full min-h-20 mx-auto flex items-center justify-center text-center overflow-hidden"
     >
       <motion.h1
-        className={`${className} w-full inline-block font-bold capitalize py-3 text-6xl`}
+        className={`${className} w-full inline-block font-bold capitalize py-2 md:py-3 text-4xl md:text-5xl lg:text-6xl`}
         variants={quote}
         initial="initial"
         animate={inView ? "animate" : "initial"}

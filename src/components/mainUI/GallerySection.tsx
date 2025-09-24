@@ -12,19 +12,50 @@ import {
 } from "../ui/card";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import galleryData from "@/data/gallery";
+import { useEffect, useState } from "react";
 
 export default function GallerySection() {
+    interface Gallery {
+      _id: string;
+      title: string;
+      description: string;
+      image: string;
+      link: string;
+    }
+    const [gallery, setGallery] = useState<Gallery[]>([]);
+    const fetchGallery = async () => {
+      try {
+        const fetchedData = await fetch("/api/gallery");
+        const fetchedGallery = await fetchedData.json();
+        console.log("fetchedGallery: ", fetchedGallery); // Debugging line
+        if (Array.isArray(fetchedGallery)) {
+          setGallery(fetchedGallery);
+        } else {
+          console.error(
+            "API /api/gallery did not return an array:",
+            fetchedGallery
+          );
+          setGallery([]);
+        }
+      } catch (e) {
+        console.error("Failed to fetch gallery items:", e);
+        setGallery([]);
+      } finally {
+      }
+    };
+    useEffect(() => {
+      fetchGallery();
+    },[]);
   return (
     <section className="py-20 w-full bg-ourLightBlue">
       <div className="container mx-auto px-6">
         <SubHeading text="Gallery" className="mb-5" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {galleryData.map(
+          {gallery.map(
             (item, index) =>
               index <= 2 && (
                 <Card
-                  key={item.id}
+                  key={item._id}
                   className="group hover:shadow-lg transition-shadow duration-300 relative !pt-0"
                 >
                   <CardHeader className="p-0">
