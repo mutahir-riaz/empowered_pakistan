@@ -15,7 +15,6 @@ import {
   CarouselPrevious,
 } from "../../components/ui/carousel";
 import React, { useEffect, useState } from "react";
-import eventsData from "@/data/events";
 
 export default function EventsPast() {
   const plugin = React.useRef(

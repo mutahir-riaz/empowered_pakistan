@@ -5,7 +5,6 @@ import { Badge } from "../ui/badge";
 import { Calendar, Clock, MapPin } from "lucide-react";
 import Image from "next/image";
 import SubHeading from "../ui/SubHeading";
-import eventsData from "@/data/events";
 import { useEffect, useState } from "react";
 
 export default function EventsUpcoming() {

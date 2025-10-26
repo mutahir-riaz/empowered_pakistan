@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const GallerySchema = new mongoose.Schema(
   {
@@ -13,5 +13,5 @@ const GallerySchema = new mongoose.Schema(
 GallerySchema.index({ title: 1 });
 GallerySchema.index({ title: "text", description: "text" });
 
-// 👇 force the collection name to "gallery"
-module.exports = mongoose.models.Gallery || mongoose.model("Gallery", GallerySchema, "gallery");
+// Use ES6 export and ternary operator for model declaration
+export default mongoose.models.Gallery || mongoose.model("Gallery", GallerySchema, "gallery");

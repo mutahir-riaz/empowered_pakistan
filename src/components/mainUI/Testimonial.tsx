@@ -3,7 +3,6 @@ import { Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import Image from "next/image";
-import Heading from "../ui/Heading";
 import SubHeading from "../ui/SubHeading";
 
 export default function Testimonail() {

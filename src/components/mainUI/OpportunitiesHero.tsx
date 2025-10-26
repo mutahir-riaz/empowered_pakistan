@@ -3,15 +3,7 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import { ArrowDown } from "lucide-react";
 import Heading from "../ui/Heading";
-import { Input } from "../ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import { Search, Filter, Target } from "lucide-react";
+import { Target } from "lucide-react";
 
 export default function OppurtunitiesHero() {
   const scrollToAllOppurtunities = () => {
